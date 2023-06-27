@@ -28,15 +28,21 @@ export default async function handler(req: any, res: any) {
 
       let token: any = await getAsset(webhook_data[0].events.nft.nfts[0].mint);
 
+      console.log("attributes", token.content.metadata.attributes);
+
       let isAtLeastTierOneHead = token.content.metadata.attributes.some(
         (attribute: any) =>
           attribute.traitType === "Head Tier" && attribute.value >= 1
       );
 
+      console.log("isAtLeastTierOneHead", isAtLeastTierOneHead);
+
       let isAtLeastTierOneOutfit = token.content.metadata.attributes.some(
         (attribute: any) =>
           attribute.traitType === "Outfit Tier" && attribute.value >= 1
       );
+
+      console.log("isAtLeastTierOneOutfit", isAtLeastTierOneOutfit);
 
       let isAtLeastTierOne = isAtLeastTierOneHead && isAtLeastTierOneOutfit;
 
@@ -106,10 +112,12 @@ export default async function handler(req: any, res: any) {
                   {
                     name: "4T?",
                     value: is4T,
+                    inline: true,
                   },
                   {
                     name: "tier > 1?",
                     value: isAtLeastTierOne,
+                    inline: true,
                   },
                 ],
                 image: {
