@@ -32,14 +32,14 @@ export default async function handler(req: any, res: any) {
 
       let isAtLeastTierOneHead = token.content.metadata.attributes.some(
         (attribute: any) =>
-          attribute.traitType === "Head Tier" && attribute.value >= 1
+          attribute.trait_type === "Head Tier" && attribute.value >= 1
       );
 
       console.log("isAtLeastTierOneHead", isAtLeastTierOneHead);
 
       let isAtLeastTierOneOutfit = token.content.metadata.attributes.some(
         (attribute: any) =>
-          attribute.traitType === "Outfit Tier" && attribute.value >= 1
+          attribute.trait_type === "Outfit Tier" && attribute.value >= 1
       );
 
       console.log("isAtLeastTierOneOutfit", isAtLeastTierOneOutfit);
@@ -110,12 +110,16 @@ export default async function handler(req: any, res: any) {
                     inline: true,
                   },
                   {
-                    name: "4T?",
+                    name: " ",
+                    value: " ",
+                  },
+                  {
+                    name: "4 attributs?",
                     value: is4T,
                     inline: true,
                   },
                   {
-                    name: "tier > 1?",
+                    name: "tier 1 ou +?",
                     value: isAtLeastTierOne,
                     inline: true,
                   },
