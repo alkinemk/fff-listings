@@ -28,6 +28,41 @@ export default async function handler(req: any, res: any) {
 
       let token: any = await getAsset(webhook_data[0].events.nft.nfts[0].mint);
 
+      let isAtLeastTierOneHead = token.content.metadata.attributes.some(
+        (attribute: any) =>
+          attribute.traitType === "Head Tier" && attribute.value >= 1
+      );
+
+      let isAtLeastTierOneOutfit = token.content.metadata.attributes.some(
+        (attribute: any) =>
+          attribute.traitType === "Outfit Tier" && attribute.value >= 1
+      );
+
+      let isAtLeastTierOne = isAtLeastTierOneHead && isAtLeastTierOneOutfit;
+
+      const hasGoodEyes = token.content.metadata.attributes.some(
+        (attribute: any) =>
+          attribute.traitType === "Eyes" &&
+          (attribute.value === "Mutated" ||
+            attribute.value === "Sleepy" ||
+            attribute.value === "Shades" ||
+            attribute.value === "Scar" ||
+            attribute.value === "Eye Patch" ||
+            attribute.value === "Thug" ||
+            attribute.value === "Synth" ||
+            attribute.value === "Solana" ||
+            attribute.value === "Spectacles")
+      );
+
+      const hasGoodMouth = token.content.metadata.attributes.some(
+        (attribute: any) =>
+          (attribute.traitType === "Mouth" && attribute.value === "Stache") ||
+          attribute.value === "Beard" ||
+          attribute.value === "Fangs"
+      );
+
+      let is4T = hasGoodEyes && hasGoodMouth;
+
       let listing_price = (
         webhook_data[0].events.nft.amount / 1000000000
       ).toFixed(2);
@@ -69,8 +104,12 @@ export default async function handler(req: any, res: any) {
                     inline: true,
                   },
                   {
-                    name: " ",
-                    value: " ",
+                    name: "4T?",
+                    value: is4T,
+                  },
+                  {
+                    name: "tier > 1?",
+                    value: isAtLeastTierOne,
                   },
                 ],
                 image: {
