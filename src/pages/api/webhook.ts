@@ -48,7 +48,7 @@ export default async function handler(req: any, res: any) {
 
       const hasGoodEyes = token.content.metadata.attributes.some(
         (attribute: any) =>
-          attribute.traitType === "Eyes" &&
+          attribute.trait_type === "Eyes" &&
           (attribute.value === "Mutated" ||
             attribute.value === "Sleepy" ||
             attribute.value === "Shades" ||
@@ -62,7 +62,7 @@ export default async function handler(req: any, res: any) {
 
       const hasGoodMouth = token.content.metadata.attributes.some(
         (attribute: any) =>
-          (attribute.traitType === "Mouth" && attribute.value === "Stache") ||
+          (attribute.trait_type === "Mouth" && attribute.value === "Stache") ||
           attribute.value === "Beard" ||
           attribute.value === "Fangs"
       );
