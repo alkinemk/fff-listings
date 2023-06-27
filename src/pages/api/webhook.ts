@@ -28,25 +28,13 @@ export default async function handler(req: any, res: any) {
 
       let token: any = await getAsset(webhook_data[0].events.nft.nfts[0].mint);
 
-      let isTier1: boolean = true;
-      let is4T: boolean = true;
-
-      let playerPointsObject = token.content.metadata.attributes.find(
-        (item: any) => item.trait_type === "player points"
-      );
-
-      const playerPointsValue = playerPointsObject.value;
-
       let listing_price = (
         webhook_data[0].events.nft.amount / 1000000000
       ).toFixed(2);
 
-      const points_per_sol = Number(listing_price) / Number(playerPointsValue);
-
       console.log("title", token.content.metadata.name);
-      console.log("points_per_sol", points_per_sol);
 
-      if (points_per_sol <= 3) {
+      {
         const response = await fetch(webhook, {
           method: "POST",
           headers: {
@@ -83,17 +71,6 @@ export default async function handler(req: any, res: any) {
                   {
                     name: " ",
                     value: " ",
-                  },
-
-                  {
-                    name: "Player points",
-                    value: playerPointsValue,
-                    inline: true,
-                  },
-                  {
-                    name: "SOL per points",
-                    value: points_per_sol.toFixed(2),
-                    inline: true,
                   },
                 ],
                 image: {
