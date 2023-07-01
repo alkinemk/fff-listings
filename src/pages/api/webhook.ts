@@ -67,6 +67,31 @@ export default async function handler(req: any, res: any) {
           attribute.value === "Fangs"
       );
 
+      const hasUniqueRoom = token.content.metadata.attributes.some(
+        (attribute: any) =>
+          attribute.value === "Orange Origins" ||
+          attribute.value === "Galactic Geckos" ||
+          attribute.value === "DeGods" ||
+          attribute.value === "Trading Room" ||
+          attribute.value === "Gargolon" ||
+          attribute.value === "NFTgfx" ||
+          attribute.value === "Grim Syndicate" ||
+          attribute.value === "Solsteads" ||
+          attribute.value === "Monkettes" ||
+          attribute.value === "Bitmon" ||
+          attribute.value === "BAPE" ||
+          attribute.value === "Sea Shanties" ||
+          attribute.value === "Igloo" ||
+          attribute.value === "Degen DAOO" ||
+          attribute.value === "Gym" ||
+          attribute.value === "Poker" ||
+          attribute.value === "Jambo Mambo" ||
+          attribute.value === "Portals" ||
+          attribute.value === "MonkeDAO" ||
+          attribute.value === "Solana Storm" ||
+          attribute.value === "Gooney Tunes"
+      );
+
       let is4T = hasGoodEyes && hasGoodMouth;
 
       let listing_price = (
@@ -75,7 +100,61 @@ export default async function handler(req: any, res: any) {
 
       console.log("title", token.content.metadata.name);
 
-      {
+      if (hasUniqueRoom) {
+        const response = await fetch(webhook, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            content: null,
+            embeds: [
+              {
+                title: token.content.metadata.name + " listed!",
+                url: `https://www.tensor.trade/item/${webhook_data[0].events.nft.nfts[0].mint}`,
+                color: 16486972,
+                fields: [
+                  {
+                    name: " ",
+                    value: " ",
+                  },
+
+                  {
+                    name: " ",
+                    value: " ",
+                  },
+
+                  {
+                    name: ":moneybag:  Listing Price",
+                    value: "**" + listing_price + " " + "SOL**",
+                    inline: true,
+                  },
+                  {
+                    name: ":date:  Listing Date",
+                    value: `<t:${webhook_data[0].timestamp}:R>`,
+                    inline: true,
+                  },
+                  {
+                    name: "Room unique?",
+                    value: hasUniqueRoom,
+                    inline: true,
+                  },
+                ],
+                image: {
+                  url: token.content.files[0].uri,
+                },
+                timestamp: new Date().toISOString(),
+                footer: {
+                  text: "Helius",
+                  icon_url:
+                    "https://assets-global.website-files.com/641a8c4cac3aee8bd266fd58/642b5b2804ea37191a59737b_favicon-32x32.png",
+                },
+              },
+            ],
+          }),
+        });
+        console.log(response);
+      } else {
         const response = await fetch(webhook, {
           method: "POST",
           headers: {
@@ -139,6 +218,7 @@ export default async function handler(req: any, res: any) {
         });
         console.log(response);
       }
+
       res.status(200).json("success");
     }
   } catch (err) {
