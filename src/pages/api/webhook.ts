@@ -28,6 +28,7 @@ export default async function handler(req: any, res: any) {
 
       let token: any = await getAsset(webhook_data[0].events.nft.nfts[0].mint);
 
+      console.log("title", token.content.metadata.name);
       console.log("attributes", token.content.metadata.attributes);
 
       let isAtLeastTierOneHead = token.content.metadata.attributes.some(
@@ -35,14 +36,10 @@ export default async function handler(req: any, res: any) {
           attribute.trait_type === "Head Tier" && attribute.value >= 1
       );
 
-      console.log("isAtLeastTierOneHead", isAtLeastTierOneHead);
-
       let isAtLeastTierOneOutfit = token.content.metadata.attributes.some(
         (attribute: any) =>
           attribute.trait_type === "Outfit Tier" && attribute.value >= 1
       );
-
-      console.log("isAtLeastTierOneOutfit", isAtLeastTierOneOutfit);
 
       let isAtLeastTierOne = isAtLeastTierOneHead && isAtLeastTierOneOutfit;
 
@@ -97,8 +94,6 @@ export default async function handler(req: any, res: any) {
       let listing_price = (
         webhook_data[0].events.nft.amount / 1000000000
       ).toFixed(2);
-
-      console.log("title", token.content.metadata.name);
 
       if (hasUniqueRoom) {
         const response = await fetch(webhook, {
